@@ -430,7 +430,7 @@ function renderResult(entry) {
                 <div class="result-path">${escHtml(entry.path)}${dateHtml}</div>
             </div>
             <div class="result-actions">
-                <a href="${escAttr(fileUrl)}" class="btn-sm btn-download" title="Download file">Download</a>
+                <a href="${escAttr(fileUrl)}" rel="noreferrer" class="btn-sm btn-download" title="Download file">Download</a>
             </div>
         </div>`;
 }
