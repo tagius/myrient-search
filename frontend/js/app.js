@@ -381,18 +381,20 @@ function formatDate(dateStr) {
     } catch { return dateStr; }
 }
 
-// Encode a path for Myrient URLs — encodeURIComponent leaves some chars
-// unencoded (RFC 3986 unreserved) that Myrient expects percent-encoded
+// Encode a Myrient file path for download URLs
+// Directory segments: only need encodeURIComponent (spaces, & etc.)
+// Filename (last segment): also needs (, ), !, ', ~, * encoded
 function encodeMyrientPath(path) {
-    return path.split("/").map(segment =>
-        encodeURIComponent(segment)
-            .replace(/\(/g, "%28")
-            .replace(/\)/g, "%29")
-            .replace(/!/g, "%21")
-            .replace(/'/g, "%27")
-            .replace(/~/g, "%7E")
-            .replace(/\*/g, "%2A")
-    ).join("/");
+    const parts = path.split("/");
+    const dirs = parts.slice(0, -1).map(encodeURIComponent);
+    const filename = encodeURIComponent(parts[parts.length - 1])
+        .replace(/\(/g, "%28")
+        .replace(/\)/g, "%29")
+        .replace(/!/g, "%21")
+        .replace(/'/g, "%27")
+        .replace(/~/g, "%7E")
+        .replace(/\*/g, "%2A");
+    return [...dirs, filename].join("/");
 }
 
 function renderResult(entry) {
