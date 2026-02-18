@@ -325,16 +325,17 @@ a:hover { text-decoration: underline; color: var(--text); }
     padding: 12px 14px; background: var(--bg-card);
     border: 1px solid var(--border); border-radius: var(--radius);
     margin-bottom: 0.5rem; transition: background 0.2s ease;
-    text-decoration: none !important; color: inherit;
+    color: inherit;
 }
 .result-card:hover { background: var(--bg-hover); }
 .result-icon { font-size: 1.4rem; flex-shrink: 0; width: 32px; text-align: center; padding-top: 2px; }
 .result-body { flex: 1; min-width: 0; }
-.result-title {
-    font-weight: 700; color: var(--accent); font-size: 1.05rem;
+.result-title-link {
+    display: block; font-weight: 700; color: var(--accent); font-size: 1.05rem;
     margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    text-decoration: none; cursor: pointer;
 }
-.result-card:hover .result-title { color: var(--accent-light); }
+.result-title-link:hover { color: var(--accent-light); text-decoration: underline; }
 
 .result-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 4px; }
 .badge {
@@ -372,11 +373,13 @@ a:hover { text-decoration: underline; color: var(--text); }
 }
 .result-actions { display: flex; flex-shrink: 0; align-items: flex-start; gap: 0.4rem; padding-top: 2px; }
 .btn-sm {
-    padding: 4px 10px; font-size: 0.78rem; border-radius: var(--radius);
+    display: inline-block; padding: 4px 10px; font-size: 0.78rem; border-radius: var(--radius);
     background: #6c757d; color: var(--text); border: none; cursor: pointer;
     text-decoration: none !important; transition: var(--transition); font-family: inherit;
 }
 .btn-sm:hover { background: var(--bg-active); color: var(--text); }
+.btn-download { background: var(--accent); color: #1c2020; font-weight: 600; }
+.btn-download:hover { background: var(--accent-light); color: #1c2020; }
 
 /* ─── PAGINATION ────────────────────────────────────────────── */
 .pagination {

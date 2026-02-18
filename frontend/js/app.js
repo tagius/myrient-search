@@ -399,7 +399,13 @@ function encodeMyrientPath(path) {
 
 function renderResult(entry) {
     const icon = getIcon(entry.name, entry.is_directory);
-    const downloadUrl = MYRIENT_BASE + encodeMyrientPath(entry.path);
+    const fileUrl = MYRIENT_BASE + encodeMyrientPath(entry.path);
+
+    // Parent folder URL — everything up to the last /
+    const parentPath = entry.path.includes("/")
+        ? entry.path.substring(0, entry.path.lastIndexOf("/") + 1)
+        : "";
+    const folderUrl = MYRIENT_BASE + parentPath.split("/").map(encodeURIComponent).join("/");
 
     let badges = "";
     if (isRecentEntry(entry.last_modified)) {
@@ -416,17 +422,17 @@ function renderResult(entry) {
         : "";
 
     return `
-        <a href="${escAttr(downloadUrl)}" target="_blank" rel="noopener" class="result-card">
+        <div class="result-card">
             <div class="result-icon">${icon}</div>
             <div class="result-body">
-                <div class="result-title" title="${escAttr(entry.name)}">${escHtml(entry.name)}</div>
+                <a href="${escAttr(folderUrl)}" target="_blank" rel="noopener" class="result-title-link" title="${escAttr(entry.name)}">${escHtml(entry.name)}</a>
                 <div class="result-badges">${badges}</div>
                 <div class="result-path">${escHtml(entry.path)}${dateHtml}</div>
             </div>
             <div class="result-actions">
-                <span class="btn-sm">Download</span>
+                <a href="${escAttr(fileUrl)}" class="btn-sm btn-download" title="Download file">Download</a>
             </div>
-        </a>`;
+        </div>`;
 }
 
 function hideResults() {
