@@ -1,0 +1,15 @@
+services:
+  myrient-search:
+    build: .
+    container_name: myrient-search
+    ports:
+      - "8080:8080"
+    volumes:
+      - myrient-data:/data
+    env_file:
+      - .env
+    restart: unless-stopped
+
+volumes:
+  myrient-data:
+    driver: local

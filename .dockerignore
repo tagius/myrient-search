@@ -1,0 +1,10 @@
+Myrient-Search-Engine/
+.git
+__pycache__
+*.pyc
+data/myrient.db*
+.env
+PLAN.md
+README.md
+test_*.py
+.DS_Store
