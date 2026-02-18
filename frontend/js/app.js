@@ -381,10 +381,23 @@ function formatDate(dateStr) {
     } catch { return dateStr; }
 }
 
+// Encode a path for Myrient URLs — encodeURIComponent leaves some chars
+// unencoded (RFC 3986 unreserved) that Myrient expects percent-encoded
+function encodeMyrientPath(path) {
+    return path.split("/").map(segment =>
+        encodeURIComponent(segment)
+            .replace(/\(/g, "%28")
+            .replace(/\)/g, "%29")
+            .replace(/!/g, "%21")
+            .replace(/'/g, "%27")
+            .replace(/~/g, "%7E")
+            .replace(/\*/g, "%2A")
+    ).join("/");
+}
+
 function renderResult(entry) {
     const icon = getIcon(entry.name, entry.is_directory);
-    // Encode each path segment individually so &, (, ) etc. are percent-encoded
-    const downloadUrl = MYRIENT_BASE + entry.path.split("/").map(encodeURIComponent).join("/");
+    const downloadUrl = MYRIENT_BASE + encodeMyrientPath(entry.path);
 
     let badges = "";
     if (isRecentEntry(entry.last_modified)) {
