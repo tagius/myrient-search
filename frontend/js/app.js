@@ -383,7 +383,8 @@ function formatDate(dateStr) {
 
 function renderResult(entry) {
     const icon = getIcon(entry.name, entry.is_directory);
-    const downloadUrl = MYRIENT_BASE + encodeURI(entry.path);
+    // Encode each path segment individually so &, (, ) etc. are percent-encoded
+    const downloadUrl = MYRIENT_BASE + entry.path.split("/").map(encodeURIComponent).join("/");
 
     let badges = "";
     if (isRecentEntry(entry.last_modified)) {
