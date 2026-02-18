@@ -1,7 +1,5 @@
 __pycache__/
 *.pyc
 *.db
-*.db-wal
-*.db-shm
 .DS_Store
 Myrient-Search-Engine/
