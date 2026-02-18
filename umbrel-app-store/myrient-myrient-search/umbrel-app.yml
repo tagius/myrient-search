@@ -1,0 +1,42 @@
+manifestVersion: 1
+id: myrient-myrient-search
+name: Myrient Search
+tagline: Fast full-text search engine for the Myrient game archive
+icon: https://raw.githubusercontent.com/tagius/myrient-search/main/umbrel-app-store/myrient-myrient-search/icon.svg
+category: media
+version: "1.0.0"
+port: 8076
+description: >-
+  A self-hosted search engine that crawls and indexes the entire Myrient game archive
+  (myrient.erista.me), providing instant full-text search across 2.8 million+ files.
+
+
+  Features include FTS5-powered search with BM25 ranking, smart incremental sync
+  with content-hash change detection, multi-select filters for collection, platform,
+  manufacturer, and region, sort by relevance, name, size, type, platform, region,
+  or date, a "Recently Added" indicator for new entries, and a dark theme UI
+  inspired by the Myrient aesthetic.
+
+
+  Built with FastAPI, SQLite FTS5, and vanilla HTML/CSS/JS. The database is fully
+  self-contained — no external dependencies required. First sync takes about 30 minutes
+  to index all files, then incremental syncs are fast thanks to content-hash
+  change detection that skips unchanged directories.
+
+developer: tagius
+website: https://github.com/tagius/myrient-search
+submitter: tagius
+submission: https://github.com/tagius/umbrel-community-app-store
+repo: https://github.com/tagius/myrient-search
+support: https://github.com/tagius/myrient-search/issues
+gallery:
+  - https://raw.githubusercontent.com/tagius/myrient-search/main/umbrel-app-store/myrient-myrient-search/gallery/1.jpg
+  - https://raw.githubusercontent.com/tagius/myrient-search/main/umbrel-app-store/myrient-myrient-search/gallery/2.jpg
+  - https://raw.githubusercontent.com/tagius/myrient-search/main/umbrel-app-store/myrient-myrient-search/gallery/3.jpg
+releaseNotes: >-
+  Initial release with full-text search, smart incremental crawling with
+  content-hash change detection, date normalization, and Recently Added badges.
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""

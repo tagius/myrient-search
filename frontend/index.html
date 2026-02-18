@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myrient Search</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">Myrient <span class="brand-accent">Search</span></a>
+        <div class="nav-links">
+            <a href="https://myrient.erista.me/files/" target="_blank" rel="noopener" class="nav-link">Browse Myrient</a>
+            <button id="syncBtn" class="nav-link nav-btn" title="Trigger manual sync">Sync</button>
+        </div>
+    </nav>
+
+    <!-- HERO / SEARCH -->
+    <div id="hero" class="hero">
+        <div class="hero-content">
+<pre id="asciiArt" class="ascii-art">______  ___              _____            _____
+___   |/  /____  ___________(_)_____________  /_
+__  /|_/ /__  / / /_  ___/_  /_  _ \_  __ \  __/
+_  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
+/_/  /_/  _\__, / /_/    /_/  \___//_/ /_/\__/
+          /____/              Search!</pre>
+
+            <form id="searchForm" class="search-form" autocomplete="off">
+                <div class="search-row">
+                    <input
+                        id="searchInput"
+                        type="text"
+                        class="search-input"
+                        placeholder="Search games, ROMs, software..."
+                        autofocus
+                    >
+                    <button type="submit" class="btn btn-search" id="searchBtn">
+                        <span id="searchBtnText">Search</span>
+                        <div id="searchSpinner" class="spinner-sm hidden"></div>
+                    </button>
+                </div>
+
+                <!-- FILTERS -->
+                <div class="filters">
+                    <!-- Collection multi-select -->
+                    <div class="ms-dropdown" data-filter="collection">
+                        <div class="ms-trigger" tabindex="0">
+                            <span class="ms-label">All Collections</span>
+                            <span class="ms-arrow">&#9662;</span>
+                        </div>
+                        <div class="ms-panel">
+                            <input type="text" class="ms-search" placeholder="Filter collections...">
+                            <div class="ms-options"></div>
+                        </div>
+                    </div>
+
+                    <!-- Manufacturer (tier 1) -->
+                    <div class="ms-dropdown" data-filter="manufacturer">
+                        <div class="ms-trigger" tabindex="0">
+                            <span class="ms-label">All Manufacturers</span>
+                            <span class="ms-arrow">&#9662;</span>
+                        </div>
+                        <div class="ms-panel">
+                            <input type="text" class="ms-search" placeholder="Filter manufacturers...">
+                            <div class="ms-options"></div>
+                        </div>
+                    </div>
+
+                    <!-- Platform (tier 2, filtered by manufacturer) -->
+                    <div class="ms-dropdown" data-filter="platform">
+                        <div class="ms-trigger" tabindex="0">
+                            <span class="ms-label">All Platforms</span>
+                            <span class="ms-arrow">&#9662;</span>
+                        </div>
+                        <div class="ms-panel">
+                            <input type="text" class="ms-search" placeholder="Filter platforms...">
+                            <div class="ms-options"></div>
+                        </div>
+                    </div>
+
+                    <!-- Region multi-select -->
+                    <div class="ms-dropdown" data-filter="region">
+                        <div class="ms-trigger" tabindex="0">
+                            <span class="ms-label">All Regions</span>
+                            <span class="ms-arrow">&#9662;</span>
+                        </div>
+                        <div class="ms-panel">
+                            <input type="text" class="ms-search" placeholder="Filter regions...">
+                            <div class="ms-options"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div id="statusBar" class="status-bar hidden">
+        <div class="status-inner">
+            <span id="resultCount" class="stats-text"></span>
+            <span id="searchTime" class="stats-text"></span>
+            <!-- Sort controls -->
+            <div id="sortControls" class="sort-controls">
+                <span class="sort-label">Sort:</span>
+                <button class="sort-pill active" data-sort="relevance">Best match</button>
+                <button class="sort-pill" data-sort="name">Name</button>
+                <button class="sort-pill" data-sort="size">Size</button>
+                <button class="sort-pill" data-sort="type">Type</button>
+                <button class="sort-pill" data-sort="platform">Platform</button>
+                <button class="sort-pill" data-sort="region">Region</button>
+                <button class="sort-pill" data-sort="date">Recently Added</button>
+                <button id="sortOrderBtn" class="sort-order-btn" title="Toggle sort direction">↑</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS -->
+    <main id="results" class="results hidden">
+        <div id="resultsList" class="results-list"></div>
+        <div id="pagination" class="pagination hidden">
+            <button id="prevBtn" class="page-link" disabled>&#8249;</button>
+            <span id="pageInfo" class="page-info"></span>
+            <button id="nextBtn" class="page-link">&#8250;</button>
+        </div>
+    </main>
+
+    <!-- SYNC BANNER -->
+    <div id="syncBanner" class="sync-banner hidden">
+        <div class="sync-inner">
+            <div class="spinner-sm"></div>
+            <span id="syncMessage">Indexing in progress...</span>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span id="statsDisplay" class="stats-text">Loading stats...</span>
+            <span class="stats-sep">|</span>
+            <span id="crawlStatus" class="stats-text"></span>
+            <span class="stats-sep">|</span>
+            <a href="https://myrient.erista.me" target="_blank" rel="noopener">Myrient</a>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

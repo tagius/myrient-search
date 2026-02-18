@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myrient Search — Preview</title>
+    <style>
+/* ═══════════════════════════════════════════════════════════════
+   Myrient Search — Dark theme inspired by Myrient Search Engine
+   Color palette: #1c2020 bg, #262c2c cards, #f0a400 amber accent
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+    --bg:            #1c2020;
+    --bg-card:       #262c2c;
+    --bg-input:      #343a40;
+    --bg-hover:      #3d4351;
+    --bg-active:     #576075;
+    --border:        rgba(255, 255, 255, 0.12);
+    --border-hover:  rgba(255, 255, 255, 0.325);
+    --text:          #ffffff;
+    --text-dim:      #6c757d;
+    --text-secondary:#a0a8b4;
+    --accent:        #f0a400;
+    --accent-light:  rgb(255, 189, 51);
+    --accent-glow:   rgba(240, 164, 0, 0.25);
+    --red:           #e74c3c;
+    --green:         #27ae60;
+    --blue:          #3498db;
+    --radius:        4px;
+    --radius-lg:     6px;
+    --transition:    all 0.3s ease-in;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+a { color: var(--text); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--text); }
+.hidden { display: none !important; }
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text) !important;
+    text-decoration: none !important;
+    transition: var(--transition);
+}
+.nav-brand:hover { color: var(--accent) !important; }
+.brand-accent { color: var(--accent); }
+.nav-links { display: flex; gap: 1.2rem; align-items: center; }
+.nav-link { color: var(--text); font-size: 0.9rem; transition: var(--transition); text-decoration: none; }
+.nav-link:hover { color: var(--accent) !important; text-decoration: none; }
+.nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+.nav-btn:hover { border-color: var(--accent); color: var(--accent) !important; }
+
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem 0.5rem;
+    flex-shrink: 0;
+}
+.hero-content { width: 100%; max-width: 750px; text-align: center; }
+.ascii-art {
+    font: 7px / 6px monospace;
+    color: var(--text);
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+    white-space: pre;
+    user-select: none;
+    display: inline-block;
+}
+
+.search-form { width: 100%; }
+.search-row { display: flex; gap: 0.5rem; align-items: stretch; }
+.search-input {
+    flex: 1;
+    padding: 10px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+.search-input::placeholder { color: var(--text-dim); }
+.search-input:focus { border-color: var(--accent-light); box-shadow: 0 0 0 0.2rem var(--accent-glow); }
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.btn-search { background: #6c757d; color: var(--text); }
+.btn-search:hover { background: var(--bg-hover); }
+
+.filters { display: flex; gap: 0.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
+.filter-select {
+    flex: 1; min-width: 140px; padding: 8px 10px;
+    background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-size: 0.88rem;
+    cursor: pointer; font-family: inherit; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter-select:focus { border-color: var(--accent-light); box-shadow: 0 0 0 0.2rem var(--accent-glow); }
+
+.status-bar { padding: 0.5rem 1.5rem; background: var(--bg); border-bottom: 1px solid var(--border); }
+.status-inner { max-width: 960px; margin: 0 auto; display: flex; justify-content: space-between; }
+.stats-text { color: var(--text-dim); font-size: 0.85rem; }
+
+.results { flex: 1; max-width: 960px; width: 100%; margin: 0 auto; padding: 1rem 1.5rem 2rem; }
+.results-list { display: flex; flex-direction: column; }
+
+.result-card {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 12px 14px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 0.5rem; transition: background 0.3s ease-in;
+    text-decoration: none !important; color: inherit;
+}
+.result-card:hover { background: var(--bg-hover); }
+.result-icon { font-size: 1.4rem; flex-shrink: 0; width: 32px; text-align: center; padding-top: 2px; }
+.result-body { flex: 1; min-width: 0; }
+.result-title {
+    font-weight: 700; color: var(--accent); font-size: 1.05rem;
+    margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.result-card:hover .result-title { color: var(--accent-light); }
+.result-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 4px; }
+.badge {
+    display: inline-block; padding: 2px 8px; border-radius: var(--radius);
+    font-size: 0.75rem; font-weight: 500; white-space: nowrap;
+    background: #6c757d; color: var(--text);
+}
+.badge-collection { background: #495057; }
+.badge-platform { background: #495057; }
+.badge-region { background: #495057; }
+.badge-size { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+.result-path { font-size: 0.78rem; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; }
+.result-actions { display: flex; flex-shrink: 0; align-items: flex-start; gap: 0.4rem; padding-top: 2px; }
+.btn-sm {
+    padding: 4px 10px; font-size: 0.78rem; border-radius: var(--radius);
+    background: #6c757d; color: var(--text); border: none; cursor: pointer;
+    text-decoration: none !important; transition: var(--transition); font-family: inherit;
+}
+.btn-sm:hover { background: var(--bg-active); color: var(--text); }
+
+.pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1.5rem; padding: 1rem 0; }
+.page-link {
+    padding: 6px 14px; background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--accent-light); font-size: 1.2rem;
+    font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; line-height: 1;
+}
+.page-link:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.page-link:disabled { color: var(--text-dim) !important; cursor: not-allowed; opacity: 0.5; }
+.page-info { font-size: 0.88rem; color: var(--text-dim); min-width: 120px; text-align: center; }
+
+.footer { padding: 0.8rem 1.5rem; border-top: 1px solid var(--border); margin-top: auto; flex-shrink: 0; }
+.footer-inner { max-width: 960px; margin: 0 auto; text-align: center; color: var(--text-dim); font-size: 0.82rem; }
+.footer a { color: var(--text-dim); transition: var(--transition); }
+.footer a:hover { color: var(--accent); text-decoration: none; }
+.stats-sep { margin: 0 0.4rem; color: var(--text-dim); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand">Myrient <span class="brand-accent">Search</span></a>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Browse Myrient</a>
+            <button class="nav-link nav-btn">Sync</button>
+        </div>
+    </nav>
+
+    <div id="hero" class="hero">
+        <div class="hero-content">
+            <pre class="ascii-art"> __  __            _            _
+|  \/  |_   _ _ __(_) ___ _ __ | |_
+| |\/| | | | | '__| |/ _ \ '_ \| __|
+| |  | | |_| | |  | |  __/ | | | |_
+|_|  |_|\__, |_|  |_|\___|_| |_|\__|
+        |___/            Search!</pre>
+
+            <form class="search-form" autocomplete="off" onsubmit="return false">
+                <div class="search-row">
+                    <input type="text" class="search-input" placeholder="Search games, ROMs, software..." value="Zelda">
+                    <button type="submit" class="btn btn-search">Search</button>
+                </div>
+                <div class="filters">
+                    <select class="filter-select"><option>All Collections</option><option>No-Intro (12,400)</option><option>Redump (8,300)</option></select>
+                    <select class="filter-select"><option>All Platforms</option><option>Nintendo - NES (2,100)</option><option>Sega - Genesis (1,800)</option></select>
+                    <select class="filter-select"><option>All Regions</option><option>USA</option><option>Europe</option><option>Japan</option></select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-inner">
+            <span class="stats-text">42 results</span>
+            <span class="stats-text">in 0.08s</span>
+        </div>
+    </div>
+
+    <main class="results">
+        <div class="results-list">
+            <a href="#" class="result-card">
+                <div class="result-icon">📦</div>
+                <div class="result-body">
+                    <div class="result-title">Legend of Zelda, The (USA).zip</div>
+                    <div class="result-badges">
+                        <span class="badge badge-collection">No-Intro</span>
+                        <span class="badge badge-platform">Nintendo - NES</span>
+                        <span class="badge badge-region">USA</span>
+                        <span class="badge badge-size">512.0 KB</span>
+                    </div>
+                    <div class="result-path">No-Intro/Nintendo - Nintendo Entertainment System/Legend of Zelda, The (USA).zip</div>
+                </div>
+                <div class="result-actions">
+                    <span class="btn-sm">Download</span>
+                </div>
+            </a>
+
+            <a href="#" class="result-card">
+                <div class="result-icon">📦</div>
+                <div class="result-body">
+                    <div class="result-title">Legend of Zelda, The - A Link to the Past (USA).zip</div>
+                    <div class="result-badges">
+                        <span class="badge badge-collection">No-Intro</span>
+                        <span class="badge badge-platform">Nintendo - SNES</span>
+                        <span class="badge badge-region">USA</span>
+                        <span class="badge badge-size">1.0 MB</span>
+                    </div>
+                    <div class="result-path">No-Intro/Nintendo - Super Nintendo Entertainment System/Legend of Zelda, The - A Link to the Past (USA).zip</div>
+                </div>
+                <div class="result-actions">
+                    <span class="btn-sm">Download</span>
+                </div>
+            </a>
+
+            <a href="#" class="result-card">
+                <div class="result-icon">💿</div>
+                <div class="result-body">
+                    <div class="result-title">Legend of Zelda, The - Ocarina of Time (USA).zip</div>
+                    <div class="result-badges">
+                        <span class="badge badge-collection">No-Intro</span>
+                        <span class="badge badge-platform">Nintendo - N64</span>
+                        <span class="badge badge-region">USA</span>
+                        <span class="badge badge-size">32.0 MB</span>
+                    </div>
+                    <div class="result-path">No-Intro/Nintendo - Nintendo 64/Legend of Zelda, The - Ocarina of Time (USA).zip</div>
+                </div>
+                <div class="result-actions">
+                    <span class="btn-sm">Download</span>
+                </div>
+            </a>
+
+            <a href="#" class="result-card">
+                <div class="result-icon">📦</div>
+                <div class="result-body">
+                    <div class="result-title">Legend of Zelda, The - The Minish Cap (USA, Europe).zip</div>
+                    <div class="result-badges">
+                        <span class="badge badge-collection">No-Intro</span>
+                        <span class="badge badge-platform">Nintendo - GBA</span>
+                        <span class="badge badge-region">USA, Europe</span>
+                        <span class="badge badge-size">8.0 MB</span>
+                    </div>
+                    <div class="result-path">No-Intro/Nintendo - Game Boy Advance/Legend of Zelda, The - The Minish Cap (USA, Europe).zip</div>
+                </div>
+                <div class="result-actions">
+                    <span class="btn-sm">Download</span>
+                </div>
+            </a>
+
+            <a href="#" class="result-card">
+                <div class="result-icon">💿</div>
+                <div class="result-body">
+                    <div class="result-title">Legend of Zelda, The - Twilight Princess (USA) (Disc 1).zip</div>
+                    <div class="result-badges">
+                        <span class="badge badge-collection">Redump</span>
+                        <span class="badge badge-platform">Nintendo - GameCube</span>
+                        <span class="badge badge-region">USA</span>
+                        <span class="badge badge-size">1.3 GB</span>
+                    </div>
+                    <div class="result-path">Redump/Nintendo - GameCube/Legend of Zelda, The - Twilight Princess (USA) (Disc 1).zip</div>
+                </div>
+                <div class="result-actions">
+                    <span class="btn-sm">Download</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="pagination">
+            <button class="page-link" disabled>&#8249;</button>
+            <span class="page-info">Page 1 of 3</span>
+            <button class="page-link">&#8250;</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="stats-text">13,482,391 files</span>
+            <span class="stats-sep">|</span>
+            <span class="stats-text">42 collections</span>
+            <span class="stats-sep">|</span>
+            <span class="stats-text">387 platforms</span>
+            <span class="stats-sep">|</span>
+            <a href="#">Myrient</a>
+        </div>
+    </footer>
+
+</body>
+</html>

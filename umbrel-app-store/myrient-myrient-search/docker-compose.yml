@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: myrient-myrient-search_web_1
+      APP_PORT: 8080
+
+  web:
+    image: ghcr.io/tagius/myrient-search:v1.0.0
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      DATA_DIR: /data
+      SYNC_SCHEDULE: "0 3 * * 0"
