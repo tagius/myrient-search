@@ -13,6 +13,9 @@ COPY backend/ backend/
 COPY frontend/ frontend/
 COPY data/categories.json data/categories.json
 
+# Ensure all frontend subdirectories exist (even if empty in git)
+RUN mkdir -p /app/frontend/assets
+
 # Copy and prepare entrypoint
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
